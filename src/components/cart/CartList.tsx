@@ -10,16 +10,9 @@ import {
     Typography,
 } from "@mui/material";
 
-import { initialData } from "@/database/products";
 import { ItemCounter } from "../ui";
 import { CartContext } from "@/context";
 import { ICartProduct } from "@/interfaces";
-
-const productsInCart = [
-    initialData.products[0],
-    initialData.products[1],
-    initialData.products[2],
-];
 
 interface Props {
     editable?: boolean;
