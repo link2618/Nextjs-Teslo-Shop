@@ -37,8 +37,8 @@ const LoginPage = () => {
             return;
         }
 
-        // Todo: navegar a la pantalla que el usuario estaba
-        router.replace("/");
+        const destination = router.query.p?.toString() || '/';
+        router.replace(destination);
     };
     return (
         <AuthLayout title={"Ingresar"}>
@@ -103,7 +103,7 @@ const LoginPage = () => {
                         <Grid item xs={12} display="flex" justifyContent="end">
                             <Link
                                 component={NextLink}
-                                href="/auth/register"
+                                href={ router.query.p ? `/auth/register?p=${ router.query.p }`: '/auth/register' }
                                 passHref
                                 underline="always"
                             >

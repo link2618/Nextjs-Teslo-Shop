@@ -1,0 +1,23 @@
+{
+    "singleQuote": true,
+    "semi": true,
+    "trailingComma": "all",
+    "printWidth": 120,
+    "tabWidth": 4,
+    "overrides": [
+        {
+          "files": "*.ts",
+          "options": {
+            "parser": "typescript",
+            "semi": true,
+            "useTabs": false,
+            "singleQuote": false,
+            "trailingComma": "none",
+            "arrowParens": "always",
+            "spaceBeforeFunctionParen": true,
+            "objectPropertyAlignment": "align",
+            "arrayElementAlignment": "align"
+          }
+        }
+    ]
+}

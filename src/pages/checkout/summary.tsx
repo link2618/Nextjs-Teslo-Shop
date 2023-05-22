@@ -1,63 +1,71 @@
+import { useContext } from 'react';
 import NextLink from 'next/link';
 
 import { Link, Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
+import { CartContext } from '@/context';
+import { countries } from '@/utils';
 
 const SummaryPage = () => {
-  return (
-    <ShopLayout title='Resumen de orden' pageDescription={'Resumen de la orden'}>
-        <Typography variant='h1' component='h1'>Resumen de la orden</Typography>
+    const { shippingAddress, numberOfItems } = useContext(CartContext);
 
-        <Grid container>
-            <Grid item xs={ 12 } sm={ 7 }>
-                <CartList />
+    if (!shippingAddress) {
+        return <></>;
+    }
+
+    const { firstName, lastName, address, address2 = '', city, country, phone, zip } = shippingAddress;
+    return (
+        <ShopLayout title="Resumen de orden" pageDescription={'Resumen de la orden'}>
+            <Typography variant="h1" component="h1">
+                Resumen de la orden
+            </Typography>
+
+            <Grid container>
+                <Grid item xs={12} sm={7}>
+                    <CartList />
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <Card className="summary-card">
+                        <CardContent>
+                            <Typography variant="h2">Resumen ({numberOfItems} { numberOfItems === 1 ? 'producto':'productos' })</Typography>
+                            <Divider sx={{ my: 1 }} />
+
+                            <Box display="flex" justifyContent="space-between">
+                                <Typography variant="subtitle1">Dirección de entrega</Typography>
+                                <Link component={NextLink} href="/checkout/address" passHref underline="always">
+                                    Editar
+                                </Link>
+                            </Box>
+
+                            <Typography>{ firstName } { lastName }</Typography>
+                            <Typography>{ address }{ address2 ? `, ${address2}` : ''  }</Typography>
+                            <Typography>{ city }, { zip }</Typography>
+                            <Typography>{ countries.find( c => c.code === country )?.name }</Typography>
+                            <Typography>{ phone }</Typography>
+
+                            <Divider sx={{ my: 1 }} />
+
+                            <Box display="flex" justifyContent="end">
+                                <Link component={NextLink} href="/cart" passHref underline="always">
+                                    Editar
+                                </Link>
+                            </Box>
+
+                            <OrderSummary />
+
+                            <Box sx={{ mt: 3 }}>
+                                <Button color="secondary" className="circular-btn" fullWidth>
+                                    Confirmar Orden
+                                </Button>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Grid>
             </Grid>
-            <Grid item xs={ 12 } sm={ 5 }>
-                <Card className='summary-card'>
-                    <CardContent>
-                        <Typography variant='h2'>Resumen (3 productos)</Typography>
-                        <Divider sx={{ my:1 }} />
-
-                        <Box display='flex' justifyContent='space-between'>
-                            <Typography variant='subtitle1'>Dirección de entrega</Typography>
-                            <Link component={NextLink} href='/checkout/address' passHref underline='always'>
-                                Editar
-                            </Link>
-                        </Box>
-
-                        
-                        <Typography>Nombre cliente</Typography>
-                        <Typography>Mi casa 123</Typography>
-                        <Typography>sadf, DSA123</Typography>
-                        <Typography>Colombia</Typography>
-                        <Typography>+57 123456789</Typography>
-
-                        <Divider sx={{ my:1 }} />
-
-                        <Box display='flex' justifyContent='end'>
-                            <Link component={NextLink} href='/cart' passHref underline='always'>
-                                Editar
-                            </Link>
-                        </Box>
-
-                        <OrderSummary />
-
-                        <Box sx={{ mt: 3 }}>
-                            <Button color="secondary" className='circular-btn' fullWidth>
-                                Confirmar Orden
-                            </Button>
-                        </Box>
-
-                    </CardContent>
-                </Card>
-            </Grid>
-        </Grid>
-
-
-    </ShopLayout>
-  )
-}
+        </ShopLayout>
+    );
+};
 
 export default SummaryPage;
